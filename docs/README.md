@@ -18,3 +18,7 @@ Data → Excel cleaning → SQL analysis → Power BI dashboard
 
 ## Dataset
 Olist Brazilian E-Commerce (Kaggle)
+
+Source: https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce
+
+Note: Full dataset not included due to size constraints.
