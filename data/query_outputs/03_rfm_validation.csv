@@ -1,0 +1,5 @@
+"rfm_segment","total_customers","avg_r_ntile","avg_f_ntile","avg_m_ntile"
+"At Risk","22175","4.83","3.07","3.07"
+"Regular","69702","2.42","3.02","3.02"
+"Loyal","923","3.80","1.00","1.00"
+"Champion","559","1.46","1.00","1.00"
