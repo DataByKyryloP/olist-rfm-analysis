@@ -25,19 +25,27 @@ FROM
 
 WHERE 
     rfm_segment IN ('At Risk', 'Regular')
+    AND total_spend IS NOT NULL   -- Excluding anomalous 1 NULL spend record
 
 ORDER BY 
     total_spend DESC
 LIMIT 50;
 
+
+
 /*
 INSIGHT:
-Reactivation pool is concentrated in At Risk and Regular customers,
-with clear high-value outliers based on historical spend.
 
-A small number of customers contribute disproportionately high revenue,
-making them priority targets for retention campaigns.
+High-value reactivation opportunities are concentrated among both At Risk and Regular customers,
+with several individuals showing exceptionally high historical spend despite low purchase frequency.
 
-This output transforms segmentation into action:
-it ranks customers by recovery potential, enabling budget-efficient marketing targeting.
+Notably, most high-value customers in this segment have only 1 order,
+indicating large one-time purchases rather than repeat buying behavior.
+
+This suggests a key retention opportunity:
+targeted campaigns should focus on converting these high-spend, low-frequency customers
+into repeat buyers rather than simply reactivating churned users.
+
+The output provides a prioritized list ranked by revenue recovery potential,
+enabling efficient allocation of marketing resources.
 */
