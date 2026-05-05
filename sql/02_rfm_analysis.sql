@@ -1,16 +1,19 @@
 -- =========================================
--- RFM ANALYSIS - CUSTOMER SEGMENT DISTRIBUTION
+-- Query 02: Customer Segment Distribution & Revenue Contribution
+-- Business Question:
+-- How are customers distributed across RFM segments,
+-- and how does each segment contribute to revenue?
+
+-- Goal:
+-- Understand customer base structure and revenue concentration
+-- across behavioral segments (Champions, Loyal, Regular, At Risk).
+
+-- Why this matters:
+-- Identifies whether revenue is driven by a small high-value group
+-- or spread evenly across the customer base.
 -- =========================================
 
-/*
-BUSINESS QUESTION:
-Which customer segments are the most common in the dataset?
-
-WHY THIS MATTERS:
-This helps us understand the structure of the customer base. It shows which types of customers 
-dominate the business (e.g. loyal, lost, new, best customers).
-*/
-
+-- SEGMENT DISTRIBUTION
 SELECT 
     rfm_segment,
     COUNT(*) AS customers
@@ -21,29 +24,9 @@ GROUP BY
 ORDER BY 
     customers DESC;
 
-/*
-INSIGHT:
-The customer base is heavily skewed toward Regular and At Risk segments, 
-indicating that while acquisition volume is strong, retention and loyalty 
-development are weak. High-value Champions represent a very small fraction 
-of users, suggesting opportunity for targeted VIP retention strategies.
-*/
 
 
-
-
--- =========================================
--- REVENUE BY CUSTOMER SEGMENT
--- =========================================
-
-/*
-BUSINESS QUESTION:
-Which customer segments generate the most revenue?
-
-WHY THIS MATTERS:
-This shows which groups actually drive business value, not just customer counts.
-*/
-
+-- REVENUE BY SEGMENT
 SELECT 
     rfm_segment,
     COUNT(*) AS customers,
@@ -56,15 +39,20 @@ GROUP BY
 ORDER BY 
     total_revenue DESC;
 
+
 /*
 INSIGHT:
-Customer base is heavily concentrated in the Regular segment (~69k customers),
-while Champions are very small in size but dominate revenue contribution.
 
-Revenue follows a strong Pareto pattern:
-a tiny Champion group generates disproportionate total value,
-confirming high-value customer concentration.
+Customer base is heavily skewed toward Regular and At Risk segments,
+indicating strong acquisition but weaker retention and loyalty development.
 
-At Risk customers still hold meaningful revenue volume,
-making them the main retention opportunity.
+Revenue follows a strong Pareto distribution:
+a very small Champion group contributes disproportionately high total revenue,
+despite being the smallest segment in size.
+
+At Risk customers still represent meaningful revenue volume,
+making them the most important segment for retention-focused marketing.
+
+Overall structure confirms classic e-commerce imbalance:
+many low-value users, few extremely high-value customers.
 */
