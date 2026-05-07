@@ -76,104 +76,151 @@ Scoring:
 Output: `olist_rfm.xlsx`
 
 ---
-
 ## Phase 2 — SQL Analysis & Validation Layer (PostgreSQL)
 
-Excel-generated RFM dataset was loaded into PostgreSQL for validation and deeper behavioral analysis.
+The Excel-generated RFM dataset was loaded into PostgreSQL for validation and deeper behavioral analysis using SQL.
 
-### Core SQL analysis tasks:
+### Core SQL analysis tasks
 
-| File | Business Question |
+| File | Purpose |
 |---|---|
-| 01_rfm_validate.sql | Does Excel RFM align with SQL NTILE segmentation? |
-| 02_segment_summary.sql | How does revenue distribute across segments? |
-| 03_cohort_by_segment.sql | Which acquisition periods produce high-value customers? |
-| 04_category_by_segment.sql | What categories define each customer segment? |
-| 05_reactivation_targets.sql | Which customers are highest-value reactivation targets? |
+| 01_create_tables.sql | Creates raw orders table and final `rfm_analysis` table schema |
+| 02_rfm_analysis.sql | Customer segment distribution and revenue contribution analysis |
+| 03_rfm_validation.sql | SQL NTILE validation of Excel-based RFM segmentation |
+| 04_segment_summary.sql | Revenue, engagement, and recency comparison across segments |
+| 05_reactivation_targets.sql | Identifies high-value At Risk and Regular customers for retention campaigns |
 
 ---
 
-### Key validation (Query 01)
+### Query 01 — Database Schema Setup
 
-SQL NTILE segmentation confirms Excel logic:
-- Champions consistently rank highest in frequency and monetary value
-- At Risk customers show low recency but retained historical value
-- Regular segment remains structurally mid-value
+The project begins with creation of:
+- Raw Olist orders table
+- Final `rfm_analysis` table containing:
+  - recency
+  - frequency
+  - monetary metrics
+  - RFM scores
+  - segment labels
 
-👉 Confirms Excel-based RFM logic is statistically aligned with SQL window functions
-
----
-
-### Segment performance insights (Query 02–04)
-
-- Revenue is heavily concentrated in Champions (Pareto distribution)
-- Regular customers form largest volume but lowest value efficiency
-- At Risk customers still hold meaningful historical revenue potential
-- Category behavior varies significantly across segments
+This creates the analytical structure used throughout the SQL phase.
 
 ---
 
-### Reactivation targeting (Query 05)
+### Query 02 — Customer Segment Distribution & Revenue Contribution
 
-High-value customers with declining engagement were identified:
-- Many At Risk users still show high lifetime spend
-- Majority exhibit low frequency but high-value one-time purchases
-- Strong opportunity for retention-based reactivation campaigns
+This analysis evaluates:
+- customer distribution across RFM segments
+- total revenue contribution by segment
+- average customer value
+
+### Key findings:
+- Revenue follows a strong Pareto distribution
+- Champions contribute disproportionate revenue despite small population size
+- Regular customers dominate volume but not value
+- At Risk customers still represent meaningful revenue opportunity
+
+---
+
+### Query 03 — SQL Validation of Excel RFM Logic
+
+Excel-based segmentation was independently validated using SQL window functions (`NTILE(5)`).
+
+### Validation results:
+- Champions consistently rank highest in frequency and monetary metrics
+- At Risk customers show weak recency but retained historical value
+- SQL distributions align closely with Excel scoring logic
+
+👉 Confirms the Excel RFM model is analytically consistent with production-style SQL segmentation.
+
+---
+
+### Query 04 — Segment Performance Summary
+
+Compares customer segments across:
+- total revenue
+- average revenue per customer
+- average orders
+- average recency
+
+### Key findings:
+- Champions generate the highest customer value and engagement
+- Loyal customers show stable mid-tier performance
+- Regular customers exhibit low monetization efficiency
+- At Risk customers show strongest churn signals
+
+---
+
+### Query 05 — Reactivation Target Identification
+
+Identifies high-value customers with declining engagement behavior.
+
+### Key findings:
+- Many high-value At Risk users historically spent significant amounts
+- Most exhibit low frequency but large one-time purchases
+- Strong opportunity exists for retention and reactivation campaigns
+
+Output exported as:
+`05_reactivation_targets.csv`
 
 ---
 
 ## Phase 3 — Power BI Dashboard & Insights
 
-Dashboard built in Power BI using SQL query outputs and Excel RFM dataset.
+The Power BI dashboard was built using:
+- Excel RFM dataset
+- SQL query outputs exported as CSV files
 
-### Dashboard components:
+### Dashboard Components
 
 **KPI Overview**
-- Total customers by segment
+- Customer count by segment
 - Revenue distribution
-- Average customer value
+- Average customer value metrics
 
-**Segment Revenue Distribution**
-- Champions dominate revenue despite small population size
+**Revenue Distribution Analysis**
+- Visualization of revenue concentration across RFM segments
 
-**Behavioral Segmentation Analysis**
-- Clear separation of RFM clusters
+**Behavioral Segmentation View**
+- Comparison of recency, frequency, and monetary behavior
 
 **Customer Value Profile**
-- Comparison of engagement vs revenue efficiency
+- Engagement vs monetization efficiency by segment
 
-📁 Visual:
+📁 Dashboard Preview:
+
 ![Dashboard](visuals/screenshots/dashboard.png)
 
 ---
 
 ## Key Findings
 
-- Revenue follows strong Pareto distribution (Champions dominate earnings)
-- Regular customers are high volume but low monetization efficiency
-- At Risk segment is the most important retention opportunity
-- RFM segmentation successfully isolates high-value behavioral clusters
+- Revenue is heavily concentrated among Champion customers
+- Regular customers represent high volume but low individual value
+- At Risk customers present the strongest retention opportunity
+- SQL validation confirms Excel-based segmentation reliability
+- Customer behavior separates clearly across RFM dimensions
 
 ---
 
 ## Limitations
 
-- Dataset is historical (2018 snapshot)
-- Brazil-only market — limited generalization
-- Only delivered orders included
-- RFM is static (no time-based migration modeling)
-- Excel logic is rule-based, SQL is distribution-based (expected small differences)
-- Power BI is static (no live database connection)
+- Dataset reflects a historical 2018 snapshot
+- Analysis limited to Brazilian e-commerce market
+- Only delivered orders were included
+- RFM segmentation is static rather than time-evolving
+- Power BI dashboard is not connected to a live database
+- SQL layer validates Excel outputs rather than rebuilding transformations from raw data
 
 ---
 
 ## Further Exploration
 
-- Customer churn prediction model
-- Cohort-based RFM time evolution
-- Review sentiment integration
-- Live Power BI + PostgreSQL connection
-- dbt transformation pipeline
+- Customer churn prediction modeling
+- Time-series RFM migration tracking
+- Integration of review sentiment data
+- Live PostgreSQL → Power BI connection
+- dbt-based transformation pipeline
 
 ---
 
@@ -188,16 +235,15 @@ olist-rfm-customer-segmentation/
 │   ├── cleaned/
 │   │   └── olist_rfm.xlsx
 │   └── query_outputs/
-│       ├── q1_rfm_validation.csv
-│       ├── q2_segment_summary.csv
-│       ├── q3_cohort_by_segment.csv
-│       ├── q4_category_by_segment.csv
-│       └── q5_reactivation_targets.csv
+│       ├── 02_rfm_analysis.csv
+│       ├── 03_rfm_validation.csv
+│       ├── 04_segment_summary.csv
+│       └── 05_reactivation_targets.csv
 ├── sql/
-│   ├── 01_rfm_validate.sql
-│   ├── 02_segment_summary.sql
-│   ├── 03_cohort_by_segment.sql
-│   ├── 04_category_by_segment.sql
+│   ├── 01_create_tables.sql
+│   ├── 02_rfm_analysis.sql
+│   ├── 03_rfm_validation.sql
+│   ├── 04_segment_summary.sql
 │   └── 05_reactivation_targets.sql
 ├── powerbi/
 │   └── olist_rfm_dashboard.pbix
@@ -205,38 +251,41 @@ olist-rfm-customer-segmentation/
     └── screenshots/
         └── dashboard.png
 ```
+
 ---
 
 ## Tools
 
 | Tool | Purpose |
 |---|---|
-| Excel + Power Query | Data cleaning + RFM scoring |
-| PostgreSQL | SQL validation + segmentation |
-| VS Code | Query development |
-| Power BI | Dashboarding |
+| Excel + Power Query | Data cleaning and RFM scoring |
+| PostgreSQL | SQL validation and behavioral analysis |
+| VS Code + SQLTools | Query execution and development |
+| Power BI | Dashboarding and business reporting |
+
+---
+
+## Business Use Cases
+
+This project demonstrates practical CRM and marketing analytics applications:
+
+- **Customer retention**
+  → Identify At Risk customers for win-back campaigns
+
+- **Revenue optimization**
+  → Prioritize Champion customers for loyalty investment
+
+- **Customer lifecycle analysis**
+  → Understand behavioral differences across segments
+
+- **Targeted marketing**
+  → Build segment-specific campaign strategies
+
+- **Retention analytics**
+  → Detect high-value customers showing churn behavior
 
 ---
 
 ## Data Source
 
 https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce
-
-## Business Use Cases
-
-This analysis can be applied to real-world marketing and CRM strategies:
-
-- **Customer retention strategy**
-  → Identify At Risk customers for targeted win-back campaigns
-
-- **Revenue optimization**
-  → Focus marketing spend on Champion segment (highest ROI customers)
-
-- **Customer lifecycle management**
-  → Track progression from Regular → Loyal → Champion
-
-- **Campaign targeting**
-  → Segment-based promotions instead of generic discounts
-
-- **Product strategy insights**
-  → Identify category preferences per customer segment
