@@ -189,8 +189,7 @@ The Power BI dashboard was built using:
 
 📁 Dashboard Preview:
 
-![Dashboard](visuals/screenshots/dashboard.png)
-
+![Dashboard](../visuals/screenshots/dashboard.png)
 ---
 
 ## Key Findings
