@@ -1,7 +1,19 @@
 -- =========================================
--- CREATE RAW OLIST ORDERS TABLE
+-- Query 01: Database Schema Setup (Olist RFM Project)
+-- Business Question:
+-- How do we structure the raw Olist dataset
+-- for RFM analysis in PostgreSQL?
+
+-- Goal:
+-- Create relational table structure
+-- for order-level and customer-level analysis.
+
+-- Why this matters:
+-- This is the foundation of the entire RFM pipeline.
+-- Without proper schema design, segmentation logic cannot be trusted.
 -- =========================================
 
+-- CREATE RAW OLIST ORDERS TABLE
 CREATE TABLE olist_orders (
     order_id TEXT,
     customer_id TEXT,
@@ -13,25 +25,15 @@ CREATE TABLE olist_orders (
     order_estimated_delivery_date TIMESTAMP
 );
 
-
--- =========================================
 -- CREATE TABLE: rfm_analysis
--- =========================================
-
 CREATE TABLE rfm_analysis (
     customer_id TEXT PRIMARY KEY,
-
     last_order_date DATE,
-
     order_count INTEGER,
-
     total_spend NUMERIC(12, 2),
-
     recency_days INTEGER,
-
     r_score INTEGER,
     f_score INTEGER,
     m_score INTEGER,
-
     rfm_segment TEXT
 );
