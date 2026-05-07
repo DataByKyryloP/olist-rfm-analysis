@@ -135,33 +135,36 @@ Cleaned and validated, included in `/data/query_outputs/` for downstream CRM use
 
 ```
 
-olist-rfm-analysis/
+olist-rfm-customer-segmentation/
 ├── README.md
 ├── data/
 │   ├── raw/
-│   │   └── README.md               ← Kaggle download link (CSVs not included)
+│   │   └── .gitkeep
 │   ├── cleaned/
-│   │   └── olist_rfm.xlsx          ← olist_clean + rfm_base_final + rfm_scores
+│   │   └── olist_rfm.xlsx
 │   └── query_outputs/
 │       ├── q1_rfm_validation.csv
 │       ├── q2_segment_summary.csv
 │       ├── q3_cohort_by_segment.csv
 │       ├── q4_category_by_segment.csv
 │       └── q5_reactivation_targets.csv
+│
 ├── notebooks/
-│   └── 01_olist_postgres_load.ipynb
-├── queries/
-│   ├── 01_rfm_validate.sql
-│   ├── 02_segment_summary.sql
-│   ├── 03_cohort_by_segment.sql
-│   ├── 04_category_by_segment.sql
+│   └── .gitkeep
+│
+├── sql/
+│   ├── 01_create_tables.sql
+│   ├── 02_rfm_analysis.sql
+│   ├── 03_rfm_validation.sql
+│   ├── 04_segment_summary.sql
 │   └── 05_reactivation_targets.sql
+│
 ├── powerbi/
-│   ├── olist_rfm.pbix
-│   └── olist_rfm_report.pdf
+│   └── olist_rfm_dashboard.pbix
+│
 └── visuals/
-├── dashboard_overview.png
-└── sql_crossvalidation.png
+    └── screenshots/
+        └── dashboard.png
 
 ```
 
