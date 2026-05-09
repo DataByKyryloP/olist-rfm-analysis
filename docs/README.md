@@ -73,7 +73,8 @@ Scoring:
 - At Risk
 - Regular
 
-Output: `olist_rfm.xlsx`
+📁 Final Output File:  
+[olist_rfm.xlsx](../data/cleaned/olist_rfm.xlsx)
 
 ---
 ## Phase 2 — SQL Analysis & Validation Layer (PostgreSQL)
@@ -170,6 +171,9 @@ Output exported as:
 The Power BI dashboard was built using:
 - Excel RFM dataset
 - SQL query outputs exported as CSV files
+
+📊 Power BI Dashboard File:  
+[olist_rfm_dashboard.pbix](../powerbi/olist_rfm_dashboard.pbix)
 
 ### Dashboard Components
 
